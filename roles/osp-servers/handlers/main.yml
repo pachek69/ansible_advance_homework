@@ -1,4 +1,3 @@
----
 # handlers file for osp.servers
 - name: wait for {{ item.value.name }}
   wait_for:
