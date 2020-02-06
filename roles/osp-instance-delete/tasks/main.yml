@@ -1,15 +1,17 @@
 ---
-# archivo de tareas para roles / osp-instance-delete
-  - nombre : Obtener información de instancia
-    os_server_facts :
-      nube : ospcloud
-      region_name : RegionOne
-    registrarse : r_os_servers
+# tasks file for roles/osp-instance-delete
+  - name: Fetch Instance Info
+    os_server_facts:
+      cloud: ospcloud
+      region_name: RegionOne
+    register: r_os_servers
 
-  - nombre : eliminar instancias
-    os_server :
-      nombre : " {{item.name}} "
-      estado : ausente
-      delete_fip : sí
-    con_artículos :
-      - " {{r_os_servers.ansible_facts.openstack_servers}} "
+ 
+
+  - name: Delete instances
+    os_server:
+      name: "{{ item.name }}"
+      state: absent
+      delete_fip: yes
+    with_items:
+      - "{{ r_os_servers.ansible_facts.openstack_servers }}"
