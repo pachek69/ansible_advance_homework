@@ -1,6 +1,6 @@
 ---
 # tasks file for base-config
---- 
+ 
 # Initial, common, system setup steps 
 - name: clean the repository 
    shell: yum clean all 
