@@ -1,14 +1,12 @@
 ---
-# tasks file for base-config
- 
 # Initial, common, system setup steps 
-- name: clean the repository 
+ - name: clean the repository 
    shell: yum clean all 
  
  
  
  
-- name: enable sudo without tty for some ansible commands 
+ - name: enable sudo without tty for some ansible commands 
    replace: 
      path: /etc/sudoers 
      regexp: '^Defaults\s*requiretty' 
@@ -16,21 +14,23 @@
      backup: yes 
  
  
-- name: Install EPEL repos  
+ - name: Install EPEL repos  
    yum: 
     name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm 
     state: present  
  
  
-- name: setup hostname 
+ - name: setup hostname 
    hostname: 
      name: "{{ inventory_hostname }}" 
  
-
-- name: install base tools and packages 
+ 
+ - name: install base tools and packages 
    yum: 
     name: "{{ item }}"  
     state: latest 
    with_items: 
     - httpie 
     - python-pip 
+# tasks file for base-config
+ 
