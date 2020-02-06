@@ -1,18 +1,27 @@
 ---
-- name: install HAProxy
-  yum:
-    name=haproxy state=latest
-- name: enable HAProxy
+- name: Intall the require packages
+  package:
+   name: "{{ inst_ha }}"
+   state: latest
+
+ 
+
+- name: Start Load balancer at boot
   service:
-    name: haproxy
-    state: started
-    enabled: yes
-    
-- name: configure haproxy
+   name: "{{ inst_ha }}"
+   enabled: yes
+
+ 
+
+- name: Start Load balacer serivice
+  service:
+   name: "{{ inst_ha }}"
+   state: started
+
+ 
+
+- name: Configure {{ inst_ha }}
   template:
-    src: haproxy.cfg.j2
-    dest: /etc/haproxy/haproxy.cfg
-- name: restart HAproxy
-  service:
-    name: haproxy
-    state: restarted
+   src: haproxy.cfg.j2
+   dest: /etc/haproxy/haproxy.cfg
+  notify: restart {{ inst_ha }}
