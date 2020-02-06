@@ -8,12 +8,12 @@
  
 - name: Start Load balancer at boot 
   service: 
-   name: "{{ inst_ha }}" 
+  name: "{{ inst_ha }}" 
    enabled: yes 
  
  
 - name: Start Load balacer serivice 
-   service: 
+  service: 
     name: "{{ inst_ha }}" 
     state: started 
  
