@@ -1,27 +1,37 @@
-# tasks file for app-tier
-- name: install {{ inst_tom }}
-  yum:
-   name: "{{ inst_tom }}"
-   state: latest
-
- 
-
-- name: enable {{ inst_tomcat }} at boot
+---
+- name: install tomcat
+  package:
+    name: tomcat
+    state: latest
+- name: enable tomcat at boot
   service:
-   name: "{{ inst_tom }}"
-   enabled: yes
+    name: tomcat
+    enabled: yes
 
- 
-
-- name: create tomcat default web directory
+- name: create ansible tomcat directory
   file:
-   path: "{{tomcat_web_root }}"
-   state: directory
+    path: /usr/share/tomcat/webapps/ROOT
+    state: directory
 
- 
-
-- name: copy static index.html to tomcat weroot
+- name: copy static index.html to tomcat webapps/ansible/index.html
   template:
-   src: index.html.j2
-   dest: "{{ tomcat_web_root}}/index.html"
-  notify: restart {{ inst_tom }}
+    src: index.html.j2
+    dest: /usr/share/tomcat/webapps/ROOT/index.html
+    mode: 0644
+
+- name: start tomcat
+  service:
+    name: tomcat
+    state: started
+
+- name: create ansible webapps/ansible directory
+  file:
+    path: /usr/share/tomcat/webapps/ansible
+    state: directory
+
+- name: copy static index.html to tomcat webapps/ansible/index.html
+  become: true
+  template:
+    force: yes
+    src: index.html.j2
+    dest: /usr/share/tomcat/webapps/ansible/index.html
